@@ -22,7 +22,7 @@ Function generate_names, long_min, long_max, lat_min, lat_max
 		for i=0ULL, nx-1 do begin
 			cur_lon = fix(long_min + i)
 			if (cur_lon ge 0) then lon_letter = 'E' else lon_letter = 'W'
-			cur_name = lat_letter + string(cur_lat,format='(i02)') + lon_letter + string(cur_lon,format='(i03)')
+			cur_name = lat_letter + string(abs(cur_lat),format='(i02)') + lon_letter + string(abs(cur_lon),format='(i03)')
 			name_matrix[i,j] = cur_name
 		endfor
 	endfor

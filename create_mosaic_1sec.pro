@@ -38,7 +38,6 @@ PRO create_mosaic_1sec, min_lon, max_lon, min_lat, max_lat, data_type, in_dir, o
 
 	for j=0, tiles_y-1 do begin
 		print, 'row ', j+1, ' of ', tiles_y
-		in_lun_row[*] = 0
 		;open current row of files
 		for i=0, tiles_x-1 do begin
 			if (data_type eq 1) then begin
@@ -51,9 +50,9 @@ PRO create_mosaic_1sec, min_lon, max_lon, min_lat, max_lat, data_type, in_dir, o
 				tmp_name=name_matrix[i,j]+'.hgt'
 			endif
 			
-			spawn, 'unzip '+name_zip
+			spawn, 'unzip '+in_dir+'/'+name_zip
 
-			openr, temp_lun, tmp_name, /get_lun
+			openr, temp_lun, in_dir+'/'+tmp_name, /get_lun
 			readu, temp_lun, tmp_image
 			free_lun, tmp_lun
 			in_tile_row[*,*,i] = tmp_image
