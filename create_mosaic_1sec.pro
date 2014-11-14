@@ -51,16 +51,18 @@ PRO create_mosaic_1sec, min_lon, max_lon, min_lat, max_lat, data_type, in_dir, o
 			endif
 
 			full_name_zip = in_dir + '/' + name_zip		
-			full_tmp_name = in_dir + '/' + tmp_name
 
 			;if file exists, read, if not, fill with 0
 			if (file_test(full_name_zip)) then begin
 
-				spawn, 'unzip '+in_dir+'/'+name_zip
+				spawn, 'unzip '+ full_name_zip
 
-				openr, temp_lun, in_dir+'/'+tmp_name, /get_lun
+				openr, temp_lun, tmp_name, /get_lun
 				readu, temp_lun, tmp_image
-				free_lun, tmp_lun
+				free_lun, temp_lun
+
+				if (data_type ne 1) then tmp_image = swap_endian(tmp_image)
+
 				in_tile_row[*,*,i] = tmp_image
 
 				;remove uncompressed file.
