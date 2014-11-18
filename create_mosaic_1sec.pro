@@ -52,7 +52,7 @@ PRO create_mosaic_1sec, min_lon, max_lon, min_lat, max_lat, data_type, in_dir, o
 
 			full_name_zip = in_dir + '/' + name_zip		
 
-			;if file exists, read, if not, fill with 0
+			;if file exists, read, if not, fill with 255 (for water)
 			if (file_test(full_name_zip)) then begin
 
 				spawn, 'unzip '+ full_name_zip
@@ -69,7 +69,7 @@ PRO create_mosaic_1sec, min_lon, max_lon, min_lat, max_lat, data_type, in_dir, o
 				spawn, 'rm '+tmp_name
 
 			endif else begin
-				in_tile_row[*,*,i] = 0
+				in_tile_row[*,*,i] = 255
 			endelse
 
 		endfor
