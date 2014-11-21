@@ -51,23 +51,26 @@ PRO create_mosaic_1sec, min_lon, max_lon, min_lat, max_lat, data_type, in_dir, o
 			endif
 
 			full_name_zip = in_dir + '/' + name_zip		
-			full_tmp_name = in_dir + '/' + tmp_name
+			full_name_tmp = in_dir + '/' + tmp_name
 
-			;if file exists, read, if not, fill with 0
+			;if file exists, read, if not, fill with 255 (for water)
 			if (file_test(full_name_zip)) then begin
 
-				spawn, 'unzip -d '+in_dir+ ' ' +in_dir+'/'+name_zip
+				spawn, 'unzip -d '+in_dir+ ' ' + full_name_zip
 
-				openr, temp_lun, in_dir+'/'+tmp_name, /get_lun
+				openr, temp_lun, full_tmp_name, /get_lun
 				readu, temp_lun, tmp_image
 				free_lun, temp_lun
+
+				if (data_type ne 1) then tmp_image = swap_endian(tmp_image)
+
 				in_tile_row[*,*,i] = tmp_image
 
 				;remove uncompressed file.
-				spawn, 'rm '+tmp_name
+				spawn, 'rm '+full_tmp_name
 
 			endif else begin
-				in_tile_row[*,*,i] = 0
+				in_tile_row[*,*,i] = 255
 			endelse
 
 		endfor
