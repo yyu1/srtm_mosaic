@@ -56,11 +56,11 @@ PRO create_mosaic_1sec, min_lon, max_lon, min_lat, max_lat, data_type, in_dir, o
 			;if file exists, read, if not, fill with 0
 			if (file_test(full_name_zip)) then begin
 
-				spawn, 'unzip '+in_dir+'/'+name_zip
+				spawn, 'unzip -d '+in_dir+ ' ' +in_dir+'/'+name_zip
 
 				openr, temp_lun, in_dir+'/'+tmp_name, /get_lun
 				readu, temp_lun, tmp_image
-				free_lun, tmp_lun
+				free_lun, temp_lun
 				in_tile_row[*,*,i] = tmp_image
 
 				;remove uncompressed file.
